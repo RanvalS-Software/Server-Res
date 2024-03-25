@@ -5,7 +5,8 @@ const userSchema = new Schema({
     nameSurname: { type: String, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true },
-    registerDate: { type: Date, required: false, default: Date.now }
+    registerDate: { type: Date, required: false, default: Date.now },
+    type:{type:Boolean,required:true}
 });
 
 const userModel = model('users', userSchema);

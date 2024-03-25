@@ -1,6 +1,6 @@
 const express = require("express");
 const db = require("./db/index.js");
-const sign = require("./controllers/controller.js");
+const sign = require("./controllers/register.js");
 const login = require("./controllers/login.js");
 const add = require('./controllers/add.js');
 const menu = require("./controllers/menu.js");
@@ -11,6 +11,9 @@ const {listFoods}=require('./controllers/foodsList.js');
 const getAllMenus = require("./controllers/menuList.js");
 const { deleteFood } = require("./controllers/deletefood.js");
 const { deleteMenu } = require("./controllers/menudelete.js");
+const adminLogin = require("./controllers/adminLogin.js");
+const list = require("./controllers/list.js");
+const deletePersonByUsername = require("./controllers/deleteperson.js");
 
 
 const app = express();
@@ -23,6 +26,15 @@ app.post('/register', async (req, res) => {
   try {
     console.log(req.body);
     await sign(req, res);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.post('/adminLogin', async (req, res) => {
+  try {
+    console.log(req.body)
+    await adminLogin(req, res);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -67,8 +79,23 @@ app.post('/addProduct', async (req, res) => {
     res.status(500).json({ error: 'Ürün eklenirken bir hata oluştu' });
   }
 });
+app.get('/personal', async (req, res) => {
+  try {
+    const persons = await list(false); // userType değeri false olan kullanıcıları getir
+    res.status(200).json(persons);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
-
+app.delete('/personel-sil/:username', async (req, res) => {
+  try {
+    const result = await deletePersonByUsername(req.params.username);
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ message: "Personel silme işlemi sırasında bir hata oluştu." });
+  }
+});
 
 
 // Yemek türü ekleme endpoint'i

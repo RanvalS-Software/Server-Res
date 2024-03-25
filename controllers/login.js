@@ -3,7 +3,7 @@ const userModel = require("../models/user.js");
 const login = async (req, res) => {
     try {
         // Kullanıcıdan gelen bilgileri al
-        const { userName, password } = req.body;
+        const { userName, password} = req.body;
 
         // Alanların doluluk kontrolü
         if (!userName || !password) {
